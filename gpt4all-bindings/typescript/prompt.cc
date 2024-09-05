@@ -62,8 +62,6 @@ void PromptWorker::Execute()
 
     // Update the C context by giving access to the wrappers raw pointers to std::vector data
     // which involves no copies
-    ctx->logits = wrapper->promptContext.logits.data();
-    ctx->logits_size = wrapper->promptContext.logits.size();
     ctx->tokens = wrapper->promptContext.tokens.data();
     ctx->tokens_size = wrapper->promptContext.tokens.size();
 
@@ -131,7 +129,8 @@ bool PromptWorker::ResponseCallback(int32_t token_id, const std::string token)
                 // Transform native data into JS data, passing it to the provided
                 // `jsCallback` -- the TSFN's JavaScript function.
                 auto token_id = Napi::Number::New(env, value->tokenId);
-                auto token = Napi::String::New(env, value->token);
+                auto token = Napi::Uint8Array::New(env, value->token.size());
+                memcpy(token.Data(), value->token.data(), value->token.size());
                 auto jsResult = jsCallback.Call({token_id, token}).ToBoolean();
                 promise.set_value(jsResult);
             }
