@@ -1443,7 +1443,7 @@ model to get started</source>
     <message>
         <location filename="../qml/HomeView.qml" line="82"/>
         <source>Chat with any LLM</source>
-        <translation>大预言模型聊天</translation>
+        <translation>大语言模型聊天</translation>
     </message>
     <message>
         <location filename="../qml/HomeView.qml" line="92"/>
